@@ -1,7 +1,12 @@
 USE albumize_db;
 
-INSERT INTO Albums (album_name, artist_name, rating)
-    VALUES 
-        ("Victory Lap", "Nipsey Hustle", 4),
-        ("Lord Willin", "Clipse", 3),
-        ("testing", "Artist", 5);
+ALTER TABLE Users CHANGE COLUMN createdAt createdAt datetime NOT NULL DEFAULT CURRENT_TIMESTAMP;
+ALTER TABLE Users CHANGE COLUMN updatedAt updatedAt datetime NOT NULL DEFAULT CURRENT_TIMESTAMP;
+
+INSERT INTO Users (user_name, user_email, user_password)
+    VALUES
+        ('maurwebb', 'maurwebb@gmail.com', 'mwebb321'),
+        ('alisrowd', 'alisrowd@gmail.com', 'arowd321'),
+        ('jimmmill', 'jimmmill@gmail.com', 'jmill321'),
+        ('jasolloy', 'jasolloy@gmail.com', 'jlloy321') 
+        ;

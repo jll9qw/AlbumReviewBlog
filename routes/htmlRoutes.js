@@ -1,6 +1,10 @@
+// Here, we make get requests for all data to be rendered to the html dom...
+
 var db = require("../models");
 
 module.exports = function(app) {
+
+
   // Load index page
   app.get("/", function(req, res) {
     db.Albums.findAll({}).then(function(dbExamples) {
