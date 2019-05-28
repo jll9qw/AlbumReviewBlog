@@ -7,12 +7,12 @@ module.exports = function(app) {
 
   // Load index page
   app.get("/", function(req, res) {
-    db.Albums.findAll({}).then(function(dbExamples) {
+    // db.Albums.findAll({}).then(function(dbExamples) {
       res.render("index", {
-        msg: "Welcome!",
-        examples: dbExamples
+        msg: "Welcome!"
+        // examples: dbExamples
       });
-    });
+    // });
   });
 
   // Load example page and pass in an example by id

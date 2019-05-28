@@ -1,6 +1,31 @@
-{{#each examples}}
-<li data-id="{{this.album_name}}" class="list-group-item">
-  <a href="example/{{this.artist_name}}">Album Name: {{this.album_name}} | Artist Name: {{this.artist_name}} | Rating: {{this.rating}}</a>
-  <button class="btn btn-danger float-right delete">ｘ</button>
-</li>
-{{/each}}
+<form class="container">
+  <div class="form-group">
+    <label for="username">Username</label>
+    <input type="text" class="form-control" id="username" aria-describedby="usernameHelp" placeholder="Enter username"></div>
+  <div class="form-group">
+    <label for="exampleInputPassword1">Password</label>
+    <input type="password" class="form-control" id="password" placeholder="Password">
+  </div>
+  <button type="submit" class="btn btn-primary" id="submit">Submit</button>
+</form>
+
+<script>
+  $(document).ready( () => {
+	// on submit..
+	$('#submit').on('click', (event) => {
+		event.preventDefault();
+		
+		// console.log('This works!');
+		let user_data = {
+			user_name: $('#username').val().trim(),
+			user_password: $('#password').val().trim()
+		};
+		
+		//console.log(user_data);
+
+    $.get(`/api/users/${user_data.username}`, (user_data) => {
+      
+    });
+	});
+});
+</script>

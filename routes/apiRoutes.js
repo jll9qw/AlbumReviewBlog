@@ -12,6 +12,18 @@ module.exports = function(app) {
     });
   });
 
+  // Get a User...
+  app.get('/api/users/:username', (req, res) => {
+    db.Users.findAll({
+      where: {
+        user_name: req.params.username
+      }
+    }).then((dbUser) => {
+      console.log(dbUser[0]);
+      res.json(dbUser);
+    });
+  });
+
   // POST a new user...
   app.post('/api/users', (req, res) => {
     db.Users.create(req.body).then((dbUser) => {
