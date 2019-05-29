@@ -59,6 +59,10 @@ Posts
     - body
     - createdAt
     - user_id
+    - album_name
+    - artist_name
+    - song_name
+    - rating
 
     module.exports = (sequelize, DataTypes) => {
         let Posts = sequelize.define('Posts', {

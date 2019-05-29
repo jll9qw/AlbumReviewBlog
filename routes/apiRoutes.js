@@ -13,13 +13,16 @@ module.exports = function(app) {
   });
 
   // Get a User...
-  app.get('/api/users/:username', (req, res) => {
-    db.Users.findAll({
+  app.post('/api/users/auth', (req, res) => {
+    // console.log(req.body);
+    db.Users.findOne({
       where: {
-        user_name: req.params.username
-      }
+        user_name: req.body.user_name,
+        user_password: req.body.user_password
+      },
+      include: [db.Posts]
     }).then((dbUser) => {
-      console.log(dbUser[0]);
+      console.log(dbUser);
       res.json(dbUser);
     });
   });

@@ -1,31 +1,48 @@
-<form class="container">
-  <div class="form-group">
-    <label for="username">Username</label>
-    <input type="text" class="form-control" id="username" aria-describedby="usernameHelp" placeholder="Enter username"></div>
-  <div class="form-group">
-    <label for="exampleInputPassword1">Password</label>
-    <input type="password" class="form-control" id="password" placeholder="Password">
-  </div>
-  <button type="submit" class="btn btn-primary" id="submit">Submit</button>
-</form>
+
+      <!-- Search box -->
+        <div class="row">
+           <div class="input-field label col s10 m10">
+            <i class="large material-icons prefix"></i>
+            <input id="user_search" id="icon_prefix" type="search" class="search">
+            <label for="icon_prefix">Search</label>
+          </div>
+
+          <div class="input-field label col s2 m2">
+              <a id="submit" class="grey darken-1 waves-effect waves-light btn-large">Submit</a>
+            </div>
+        </div>
+       
+              
+        <div class="row center">
+            <div class="col s4 m4">
+              <p>
+                <label>
+                  <input id="album" name="group1" type="radio" />
+                  <span class="dark-text text-darken-2">Album</span>
+                </label>
+              </p>
+            </div>
+            <div class="col s4 m4">
+                <p>
+                  <label>
+                    <input id="artist" name="group1" type="radio" />
+                    <span class="dark-text text-darken-2">Artist</span>
+                  </label>
+                </p>
+              </div>
+            <div class="col s4 m4">
+                <p>
+                  <label>
+                    <input id="song" name="group1" type="radio" />
+                    <span class="dark-text text-darken-2">Song</span>
+                  </label>
+                </p>
+            </div>
+        </div>
 
 <script>
   $(document).ready( () => {
 	// on submit..
-	$('#submit').on('click', (event) => {
-		event.preventDefault();
-		
-		// console.log('This works!');
-		let user_data = {
-			user_name: $('#username').val().trim(),
-			user_password: $('#password').val().trim()
-		};
-		
-		//console.log(user_data);
-
-    $.get(`/api/users/${user_data.username}`, (user_data) => {
-      
-    });
-	});
-});
+	
+  });
 </script>
