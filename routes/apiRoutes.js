@@ -73,4 +73,13 @@ module.exports = function(app) {
   });
   //--------   /POSTS ROUTES   --------
 
+
+  //--------   SPOTIFY ROUTES   --------
+
+  app.get('api/spotify/artists/:artistname', (req, res) => {
+    SpotifyAPI.searchSong(req.params.artistname).then(result=> {
+      res.send(result);
+    });
+  });
+  //--------   /SPOTIFY ROUTES   --------
 };
