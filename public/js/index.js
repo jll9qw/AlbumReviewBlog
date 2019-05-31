@@ -47,11 +47,17 @@ function submit_search(x, y, z) {
         console.log(user_input);
         switch(user_input.type) {
             case 'artist':
-                $.get(`/api/spotify/artists/${user_input.input}`).then( (result) => {
-                    result.forEach(song => {
-                        $('#display').append(`<p>${song.name}</p>`);
-                    });
-                });
+                $.get(`/api/spotify/artists/${user_input.input}`)
+                .then( function() {
+                    let url = `/api/spotify/artists/${user_input.input}`;
+                    location.assign(url);
+                })
+                ;
+                    // .then( (result) => {
+                    //     result.forEach(song => {
+                    //         $('#display').append(`<p>${song.name}</p>`);
+                    //     });
+                // });
                 break;
             case 'album':
                 $.get(`/api/spotify/albums/${user_input.input}`).then();
@@ -63,6 +69,3 @@ function submit_search(x, y, z) {
 
         }
 }
-
-
-

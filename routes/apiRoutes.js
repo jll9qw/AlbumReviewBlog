@@ -55,6 +55,18 @@ module.exports = function(app) {
     });
   });
 
+  // GET specific posts...
+  app.post('/api/posts/', (req, res) => {
+    db.Posts.findAll({
+      where: {
+        artist_name: req.body.artist_name,
+        song_name: req.body.song_name
+      }
+    }).then((dbPosts) => {
+      res.json(dbPosts);
+    });
+  });
+
   // POST a new post...
   app.post('/api/posts', (req, res) => {
     app.Posts.create(req.body).then((dbPost) => {
@@ -79,7 +91,20 @@ module.exports = function(app) {
 
   app.get('/api/spotify/artists/:artistname', (req, res) => {
     SpotifyAPI.searchSong(req.params.artistname).then(result => {
-      res.send(result.tracks.items);
+      let tracks = result.tracks.items
+
+      let tracks_data = tracks.map( (track) => {
+        return {
+          album_title: track.album.name,
+          album_image: track.album.images[0].url,
+          artists: track.artists[0].name,
+          song_title: track.name,
+          preview: track.preview_url
+        }
+      });
+      // console.log(tracks_data);
+
+      res.render("index.handlebars", tracks_data);
     });
   });
 

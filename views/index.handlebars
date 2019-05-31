@@ -40,5 +40,11 @@
             </div>
         </div>
 
-        <section id="display"></section>
+        <section id="display">
+          <ul>
+            {{#each this}}
+            <li>{{this.song_title}}</li>
+            {{/each}}
+          </ul>
+        </section>
 <script src="./js/index.js"></script>
