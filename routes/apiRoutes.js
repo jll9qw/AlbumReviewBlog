@@ -1,6 +1,7 @@
 // Here we interact with the database, given an html route...
 
 var db = require("../models");
+var SpotifyAPI = require('./spotify');
 
 module.exports = function(app) {
 
@@ -76,9 +77,9 @@ module.exports = function(app) {
 
   //--------   SPOTIFY ROUTES   --------
 
-  app.get('api/spotify/artists/:artistname', (req, res) => {
-    SpotifyAPI.searchSong(req.params.artistname).then(result=> {
-      res.send(result);
+  app.get('/api/spotify/artists/:artistname', (req, res) => {
+    SpotifyAPI.searchSong(req.params.artistname).then(result => {
+      res.send(result.tracks.items.name);
     });
   });
   //--------   /SPOTIFY ROUTES   --------
