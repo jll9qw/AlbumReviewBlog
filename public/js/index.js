@@ -45,5 +45,24 @@ function submit_search(x, y, z) {
             };
         
         console.log(user_input);
+        switch(user_input.type) {
+            case 'artist':
+                $.get(`/api/spotify/artists/${user_input.input}`).then( (result) => {
+                    result.forEach(song => {
+                        $('#display').append(`<p>${song.name}</p>`);
+                    });
+                });
+                break;
+            case 'album':
+                $.get(`/api/spotify/albums/${user_input.input}`).then();
+                break;
+            case 'song':
+                $.get(`/api/spotify/songs/${user_input.input}`).then();
+                break;
+        }
+
         }
 }
+
+
+
