@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "root",
-    "password": "fazalwobbelz123",
+    "password": "password202",
     "database": "albumize_db",
     "host": "localhost",
     "dialect": "mysql"
