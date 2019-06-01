@@ -1,0 +1,44 @@
+<section id="main">
+  <form class="container">
+  <div class="form-group">
+    <label for="username">Username</label>
+    <input type="text" class="form-control" id="username" aria-describedby="usernameHelp" placeholder="Enter username"></div>
+  <div class="form-group">
+    <label for="exampleInputPassword1">Password</label>
+    <input type="password" class="form-control" id="password" placeholder="Password">
+  </div>
+  <button type="submit" class="btn btn-primary" id="submit">Submit</button>
+</form>
+</section>
+
+
+<script>
+  $(document).ready( () => {
+	// on submit..
+	$('#submit').on('click', (event) => {
+		event.preventDefault();
+		
+		// console.log('This works!');
+		let user_data = {
+			user_name: $('#username').val().trim(),
+			user_password: $('#password').val().trim()
+		};
+		console.log(user_data);
+    
+    // checks if user_profile exists...
+    $.post("/api/users/auth", user_data, function(data) {
+      if (data) {
+        $('#main').empty();
+      $('#main').append(`
+        <h3>Welcome, ${data.user_name}!</h3>
+        <p>Your email is: ${data.user_email}</p>
+      `);
+      } else {
+        $('#main').empty();
+        $('#main').html(`<h1>Sorry you entered in the wrong data!!!</h1>`);
+      }
+    });
+    
+	});
+});
+</script>

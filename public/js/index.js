@@ -1,99 +1,94 @@
-// Get references to page elements
-var $exampleText = $("#example-text");
-var $exampleDescription = $("#example-description");
-var $submitBtn = $("#submit");
-var $exampleList = $("#example-list");
+// console.log('This is working...');
+$(document).ready( () => {
+    // targets...
+    const $submit =         $('#submit');
+    const $artist =         $('#artist');
+    const $album =          $('#album');
+    const $song =           $('#song');
 
-// The API object contains methods for each kind of request we'll make
-var API = {
-  saveExample: function(example) {
-    return $.ajax({
-      headers: {
-        "Content-Type": "application/json"
-      },
-      type: "POST",
-      url: "api/examples",
-      data: JSON.stringify(example)
+    $(document).on('click', '#submit', (event) => {
+        event.preventDefault();
+
+        submit_search($artist, $album, $song);
+        
     });
-  },
-  getExamples: function() {
-    return $.ajax({
-      url: "api/examples",
-      type: "GET"
+});
+
+// FUNCTIONS...
+function get_search_type (a, b, c) {
+    if (a.is(':checked')) {
+            return a[0].id;
+        }
+        else if (b.is(':checked')) {
+            return b[0].id;
+        }
+        else if (c.is(':checked')) {
+            return c[0].id;
+        }
+        else {
+            console.log('please specify search type...');
+            return;
+        }
+}
+
+function submit_search(x, y, z) {
+    if ( ($('#user_search').val().trim() === '') ) {
+            alert('Please enter a search term...');
+        }
+        else if ( !(get_search_type(x, y, z)) ) {
+            alert('Please specify a search type...');
+        }
+        else {
+            let user_input = {
+                input:      $('#user_search').val().trim(),
+                type:       get_search_type(x, y, x)
+            };
+        
+        console.log(user_input);
+        switch(user_input.type) {
+            case 'artist':
+                $.get(`/api/spotify/artists/${user_input.input}`)
+                    .then( (result) => {
+                        load_artist_songs(result);
+                    });
+                break;
+            case 'album':
+                $.get(`/api/spotify/albums/${user_input.input}`).then();
+                break;
+            case 'song':
+                $.get(`/api/spotify/songs/${user_input.input}`).then();
+                break;
+        }
+
+        }
+}
+
+function load_artist_songs(x) {
+    $('#display').empty();
+    let table = `
+    <table class="highlight">
+        <thead>
+            <tr>
+                <th>Preview</th>
+                <th>Artist(s)</th>
+                <th>Title</th>
+                <th>Album</th>
+                <th>Time</th>
+            </tr>
+        </thead>
+        <tbody id="results"></tbody>
+    </table>
+    `;
+    $('#display').append(table);
+    x.forEach(song => {
+        $('#results').append(`
+        <tr>
+            <td><a href="${song.preview}"><i class="small material-icons">audiotrack</i></a></td>
+            <td>${song.artists}</td>
+            <td>${song.song_title}</td>
+            <td>${song.album_title}</td>
+            <td>${song.time}</td>
+        </tr>
+        `);
     });
-  },
-  deleteExample: function(id) {
-    return $.ajax({
-      url: "api/examples/" + id,
-      type: "DELETE"
-    });
-  }
-};
-
-// refreshExamples gets new examples from the db and repopulates the list
-var refreshExamples = function() {
-  API.getExamples().then(function(data) {
-    var $examples = data.map(function(example) {
-      var $a = $("<a>")
-        .text(example.text)
-        .attr("href", "/example/" + example.id);
-
-      var $li = $("<li>")
-        .attr({
-          class: "list-group-item",
-          "data-id": example.id
-        })
-        .append($a);
-
-      var $button = $("<button>")
-        .addClass("btn btn-danger float-right delete")
-        .text("ｘ");
-
-      $li.append($button);
-
-      return $li;
-    });
-
-    $exampleList.empty();
-    $exampleList.append($examples);
-  });
-};
-
-// handleFormSubmit is called whenever we submit a new example
-// Save the new example to the db and refresh the list
-var handleFormSubmit = function(event) {
-  event.preventDefault();
-
-  var example = {
-    text: $exampleText.val().trim(),
-    description: $exampleDescription.val().trim()
-  };
-
-  if (!(example.text && example.description)) {
-    alert("You must enter an example text and description!");
-    return;
-  }
-
-  API.saveExample(example).then(function() {
-    refreshExamples();
-  });
-
-  $exampleText.val("");
-  $exampleDescription.val("");
-};
-
-// handleDeleteBtnClick is called when an example's delete button is clicked
-// Remove the example from the db and refresh the list
-var handleDeleteBtnClick = function() {
-  var idToDelete = $(this)
-    .parent()
-    .attr("data-id");
-
-  API.deleteExample(idToDelete).then(function() {
-    refreshExamples();
-  });
-};
-
-// Add event listeners to the submit and delete buttons
-$submitBtn.on("click", handleFormSubmit);
-$exampleList.on("click", ".delete", handleDeleteBtnClick);
+}
