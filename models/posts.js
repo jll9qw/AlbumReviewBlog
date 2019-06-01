@@ -2,13 +2,13 @@ var Users = require('./users');
 
 module.exports = (sequelize, DataTypes) => {
         let Posts = sequelize.define('Posts', {
-            user_id: {
-                type: DataTypes.INTEGER,
-                references: {
-                    model: 'Users',
-                    key: 'id'
-                }
-            },
+            // user_id: {
+            //     type: DataTypes.INTEGER,
+            //     references: {
+            //         model: 'Users',
+            //         key: 'id'
+            //     }
+            // },
             body: {
                 type: DataTypes.TEXT,
                 allowNull: false,
@@ -36,13 +36,13 @@ module.exports = (sequelize, DataTypes) => {
             }
         });
 
-        Posts.associate = (models) => {
-            Posts.belongsTo(models.Users, {
-                foreignKey: {
-                    allowNull: false
-                }
-            });
-        };
+        // Posts.associate = (models) => {
+        //     Posts.belongsTo(models.Users, {
+        //         foreignKey: {
+        //             allowNull: false
+        //         }
+        //     });
+        // };
 
         return Posts;
     };

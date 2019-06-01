@@ -59,12 +59,15 @@ module.exports = function(app) {
   app.post('/api/posts/', (req, res) => {
     db.Posts.findAll({
       where: {
-        artist_name: req.body.artist_name,
-        song_name: req.body.song_name
+        artist_name: req.body.artists,
+        song_name: req.body.song,
+        album_name: req.body.album
       }
     }).then((dbPosts) => {
-      res.json(dbPosts);
+      // res.json(dbPosts);
+      res.render('resull', dbPosts);
     });
+    console.log(req.body);
   });
 
   // POST a new post...

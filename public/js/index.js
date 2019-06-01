@@ -53,10 +53,14 @@ function submit_search(x, y, z) {
                     });
                 break;
             case 'album':
-                $.get(`/api/spotify/albums/${user_input.input}`).then();
+                $.get(`/api/spotify/artists/${user_input.input}`).then(result => {
+                    load_artist_songs(result);
+                });
                 break;
             case 'song':
-                $.get(`/api/spotify/songs/${user_input.input}`).then();
+                $.get(`/api/spotify/artists/${user_input.input}`).then(result => {
+                    load_artist_songs(result);
+                });
                 break;
         }
 
@@ -73,7 +77,7 @@ function load_artist_songs(x) {
                 <th>Artist(s)</th>
                 <th>Title</th>
                 <th>Album</th>
-                <th>Time</th>
+                <th>Length</th>
             </tr>
         </thead>
         <tbody id="results"></tbody>
@@ -82,8 +86,13 @@ function load_artist_songs(x) {
     $('#display').append(table);
     x.forEach(song => {
         $('#results').append(`
-        <tr>
-            <td><a href="${song.preview}"><i class="small material-icons">audiotrack</i></a></td>
+        <tr 
+            class="selected_row"
+            data-artists="${song.artists}" 
+            data-song="${song.song_title}" 
+            data-album="${song.album_title}"
+        >
+            <td><a href="${song.preview}" target="_blank"><i class="small material-icons">audiotrack</i></a></td>
             <td>${song.artists}</td>
             <td>${song.song_title}</td>
             <td>${song.album_title}</td>
@@ -92,3 +101,25 @@ function load_artist_songs(x) {
         `);
     });
 }
+
+// Event delegation for '.selected_row' class...
+$(document).on('click', '.selected_row', (event) => {
+    event.preventDefault();
+    // console.log('This row was clicked...');
+    let row = event.currentTarget.dataset;
+    let selected_data = {
+        artists: row.artists,
+        song: row.song,
+        album: row.album
+    };
+    console.log(selected_data);
+
+    $.post('/api/posts/', selected_data).then((result) => {
+        console.log('data was sent...');
+        if (result) {
+            console.log('data was recieved back!');
+            console.log(result);
+        }
+    });
+    
+});
