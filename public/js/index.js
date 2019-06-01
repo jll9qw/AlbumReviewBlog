@@ -6,7 +6,7 @@ $(document).ready( () => {
     const $album =          $('#album');
     const $song =           $('#song');
 
-    $submit.on('click', (event) => {
+    $(document).on('click', '#submit', (event) => {
         event.preventDefault();
 
         submit_search($artist, $album, $song);
@@ -48,16 +48,9 @@ function submit_search(x, y, z) {
         switch(user_input.type) {
             case 'artist':
                 $.get(`/api/spotify/artists/${user_input.input}`)
-                .then( function() {
-                    let url = `/api/spotify/artists/${user_input.input}`;
-                    location.assign(url);
-                })
-                ;
-                    // .then( (result) => {
-                    //     result.forEach(song => {
-                    //         $('#display').append(`<p>${song.name}</p>`);
-                    //     });
-                // });
+                    .then( (result) => {
+                        load_artist_songs(result);
+                    });
                 break;
             case 'album':
                 $.get(`/api/spotify/albums/${user_input.input}`).then();
@@ -68,4 +61,34 @@ function submit_search(x, y, z) {
         }
 
         }
+}
+
+function load_artist_songs(x) {
+    $('#display').empty();
+    let table = `
+    <table class="highlight">
+        <thead>
+            <tr>
+                <th>Preview</th>
+                <th>Artist(s)</th>
+                <th>Title</th>
+                <th>Album</th>
+                <th>Time</th>
+            </tr>
+        </thead>
+        <tbody id="results"></tbody>
+    </table>
+    `;
+    $('#display').append(table);
+    x.forEach(song => {
+        $('#results').append(`
+        <tr>
+            <td><a href="${song.preview}"><i class="small material-icons">audiotrack</i></a></td>
+            <td>${song.artists}</td>
+            <td>${song.song_title}</td>
+            <td>${song.album_title}</td>
+            <td>${song.time}</td>
+        </tr>
+        `);
+    });
 }

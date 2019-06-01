@@ -89,6 +89,7 @@ module.exports = function(app) {
 
   //--------   SPOTIFY ROUTES   --------
 
+  // SEARCH BY ARTIST...
   app.get('/api/spotify/artists/:artistname', (req, res) => {
     SpotifyAPI.searchSong(req.params.artistname).then(result => {
       let tracks = result.tracks.items
@@ -99,15 +100,21 @@ module.exports = function(app) {
           album_image: track.album.images[0].url,
           artists: track.artists[0].name,
           song_title: track.name,
-          preview: track.preview_url
+          preview: track.preview_url,
+          time: track.duration_ms
         }
       });
-      // console.log(tracks_data);
 
-      res.render("index.handlebars", tracks_data);
+      res.send(tracks_data);
     });
   });
 
+  // SEARCH BY ALBUM...
+  app.get('/api/spotify/albums/:albumname', (req, res) => {
+    SpotifyAPI.searchAlbum(req.params.albumname).then(result => {
+      console.log(result.albums.items);
+    });
+  });
   
   //--------   /SPOTIFY ROUTES   --------
 };

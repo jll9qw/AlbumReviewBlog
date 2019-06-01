@@ -13,6 +13,9 @@ const SpotifyAPI = {
   // method for searching songs...
   searchSong: function (song) {
     return spotify.search({ type: "track", query: song, limit: "8" });
+  },
+  searchAlbum: function (album) {
+    return spotify.search({ type: "album", query: album, limit: "8" });
   }
 };
   
