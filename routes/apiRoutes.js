@@ -57,6 +57,7 @@ module.exports = function(app) {
 
   // GET specific posts...
   app.post('/api/posts/', (req, res) => {
+    let meta = req.body;
     db.Posts.findAll({
       where: {
         artist_name: req.body.artists,
@@ -64,16 +65,27 @@ module.exports = function(app) {
         album_name: req.body.album
       }
     }).then((dbPosts) => {
-      // res.json(dbPosts);
-      res.render('resull', dbPosts);
+      let obj = {
+        meta: meta,
+        data: dbPosts
+      };
+      res.json(obj);
     });
-    console.log(req.body);
   });
 
   // POST a new post...
-  app.post('/api/posts', (req, res) => {
-    app.Posts.create(req.body).then((dbPost) => {
-      res.json(dbPost);
+  app.post('/api/posts/create', (req, res) => {
+    console.log(req.body);
+    db.Posts.create({
+      UserId: req.body.UserId, 
+      album_name: req.body.album, 
+      artist_name: req.body.artist, 
+      song_name: req.body.song, 
+      body: req.body.body, 
+      rating: req.body.rating
+    }).then((dbPost) => {
+      // res.json(dbPost);
+      res.send(dbPost);
     });
   });
 
