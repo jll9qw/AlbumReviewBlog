@@ -15,13 +15,11 @@ module.exports = function(app) {
 
   // Get a User for Log in...
   app.post('/api/users/auth', (req, res) => {
-    // console.log(req.body);
+    console.log(req.body);
     db.Users.findOne({
-      where: {
-        user_name: req.body.user_name,
-        user_password: req.body.user_password
-      },
-      include: [db.Posts]
+      where: req.body
+      // ,
+      // include: [db.Posts]
     }).then((dbUser) => {
       console.log(dbUser);
       if (dbUser === null) {
@@ -31,9 +29,10 @@ module.exports = function(app) {
         res.json(dbUser)
       }
     }).catch( err => {
+      console.log(err);
       // console.log(err.errors[0].message);
-      let message = err.errors[0].message;
-      res.json(message);
+      // let message = err.errors[0].message;
+      // res.json(message);
     });
   });
 

@@ -68,7 +68,7 @@ function init () {
 
 function log_in () {
     let data = {
-        user_name: $('#li_email').val().trim(),
+        user_email: $('#li_email').val().trim(),
         user_password: $('#li_password').val().trim()
     };
     console.log(data);

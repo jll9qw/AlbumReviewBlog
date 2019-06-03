@@ -36,13 +36,13 @@ module.exports = (sequelize, DataTypes) => {
             }
         });
 
-        Posts.associate = (models) => {
-            Posts.belongsTo(models.Users, {
-                foreignKey: {
-                    allowNull: false
-                }
-            });
-        };
+        // Posts.associate = (models) => {
+        //     Posts.belongsTo(models.Users, {
+        //         foreignKey: {
+        //             allowNull: false
+        //         }
+        //     });
+        // };
 
         return Posts;
     };
