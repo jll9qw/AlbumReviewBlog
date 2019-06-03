@@ -2,6 +2,8 @@
 
 var db = require("../models");
 var SpotifyAPI = require('./spotify');
+var moment = require('moment');
+
 
 module.exports = function(app) {
 
@@ -116,7 +118,9 @@ module.exports = function(app) {
           artists: track.artists[0].name,
           song_title: track.name,
           preview: track.preview_url,
-          time: track.duration_ms
+          // moment.duration('23:59:59');
+          // moment("1234", "hmm").format("HH:mm") 
+          time: moment(track.duration_ms).format('mm:ss')
         }
       });
 
