@@ -13,7 +13,7 @@ module.exports = function(app) {
     });
   });
 
-  // Get a User...
+  // Get a User for Log in...
   app.post('/api/users/auth', (req, res) => {
     // console.log(req.body);
     db.Users.findOne({
@@ -24,15 +24,49 @@ module.exports = function(app) {
       include: [db.Posts]
     }).then((dbUser) => {
       console.log(dbUser);
-      res.json(dbUser);
+      if (dbUser === null) {
+        res.json(`Log in credentials invalid.`);
+      }
+      else {
+        res.json(dbUser)
+      }
+    }).catch( err => {
+      // console.log(err.errors[0].message);
+      let message = err.errors[0].message;
+      res.json(message);
     });
   });
 
   // POST a new user...
   app.post('/api/users', (req, res) => {
-    db.Users.create(req.body).then((dbUser) => {
-      res.json(dbUser);
-    });
+    db.Users
+        // first check to see if the user already exists...
+        .findOrCreate({
+          where: {
+            user_name: req.body.user_name,
+          },
+          defaults: {
+            user_email: req.body.user_email,
+            user_password: req.body.user_password,
+            user_avatar: req.body.user_avatar
+          }
+        })
+        .then( ([user, created]) => {
+          // console.log(user.get({plain:true}));
+          if (created) {
+            res.json(user);
+          }
+          else {
+            res.send('The information you submitted is associated with an existing account!');
+          }
+        })
+        .catch( err => {
+          // let message = err.errors[0].message;
+          let message = `${err.errors[0].type}: ${err.errors[0].message}.\n "${err.errors[0].value}" failed the ${err.errors[0].validatorKey} validation.`;
+          console.log('Message sent: ', message);
+
+          res.json(message);
+        });
   });
 
   // DELETE a user...

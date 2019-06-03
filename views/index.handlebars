@@ -6,9 +6,120 @@
  
         <!-- Log in & Sign up -->
         <div class="row">
-          <div class="col s12">
-            <a id="log_in" class="waves-effect waves-light btn-flat white-text">LOG IN</a>
-            <a id="sign_up" class="waves-effect waves-light btn-flat white-text">SIGN UP</a> Not a user? Sign up!
+          <div class="col s12 center">
+            <!-- Log in Modal Trigger -->
+            <a  
+              class="waves-effect waves-light btn-flat white-text btn modal-trigger" 
+              href="#m_log_in"
+            >LOG IN</a>
+
+            <!-- Log in Modal Structure -->
+            <div id="m_log_in" class="modal black-text valign-wrapper">
+              <div class="modal-content">
+                <div class="row">
+                  <form class="col s12">
+                    <div class="row">
+                      <div class="input-field col s12">
+                        <input 
+                        placeholder="What is your email address?" 
+                        id="li_email" 
+                        type="email" 
+                        class="validate"
+                        >
+                        <label for="li_email">Email</label>
+                        <span class="helper-text left" data-error="Invalid email format" data-success="Awesome!">Must be a valid email address</span>
+                      </div>
+                      <div class="input-field col s12">
+                        <input 
+                        id="li_password" 
+                        type="password" 
+                        class="validate" 
+                        data-length="15"
+                        >
+                          <label for="li_password">Password</label>
+                          <span class="helper-text left" data-error="Weak" data-success="Strong!">Must be 6-15 characters long</span>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <a id="log_in" href="#!" class="modal-close waves-effect waves-green btn-flat">Log In</a>
+                <a href="#!" class="modal-close waves-effect waves-red btn-flat">Cancel</a>
+              </div>
+            </div>
+
+            <!-- Sign Up Modal Trigger -->
+            <a
+              id="m_sign_up_btn"  
+              class="waves-effect waves-light btn-flat white-text btn modal-trigger" 
+              href="#m_sign_up"
+            >SIGN UP</a> Not a user? Sign up!
+
+            <!-- Sign Up Modal Structure -->
+            <div id="m_sign_up" class="modal black-text">
+              <div class="modal-content">
+                <div class="row">
+                  <form class="col s12">
+                    <div class="row">
+                      <div class="input-field col s12">
+                        <input 
+                        placeholder="Enter a unique username" 
+                        id="su_user_name" 
+                        type="text" 
+                        class="validate"
+                        >
+                        <label for="su_user_name">User Name</label>
+                        <span 
+                        class="helper-text left" data-error="Must enter a valid username" 
+                        data-success="Good"
+                        id="su_un_d"
+                        >Must be 3-15 characters long</span>
+                      </div>
+                      <div class="input-field col s6">
+                        <input 
+                        placeholder="What is your email address?" 
+                        id="su_user_email" 
+                        type="email" 
+                        class="validate"
+                        >
+                        <label for="su_user_email">Email</label>
+                        <span class="helper-text left" data-error="Invalid email format" data-success="Awesome!">Must be a valid email address</span>
+                      </div>
+                      <div class="input-field col s6">
+                        <input 
+                        id="su_password" 
+                        type="password" 
+                        class="validate"
+                        data-length="15"
+                        >
+                        <label for="su_password">Password</label>
+                        <span 
+                        class="helper-text left" data-error="Weak" 
+                        data-success="Strong!"
+                        id="su_up_d"
+                        >Must be 6-15 characters long</span>
+                      </div>
+                      <div class="input-field col s12">
+                        <input 
+                        placeholder="Enter a valid link to a photo of you :)" 
+                        id="su_user_avatar" 
+                        type="url" 
+                        class="validate"
+                        >
+                        <label for="su_user_avatar">Avatar URL</label>
+                        <span class="helper-text left" data-error="Invalid url" data-success="Good">Must be a valid link</span>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <a id="sign_up" href="" class="modal-close waves-effect waves-green btn-flat">Register</a>
+                <a href="#!" class="modal-close waves-effect waves-red btn-flat">Cancel</a>
+              </div>
+            </div>
+
          </div>
        </div>
 

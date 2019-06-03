@@ -1,4 +1,5 @@
-// console.log('This is working...');
+//============================== MAIN...
+
 $(document).ready( () => {
     // targets...
     const $submit =         $('#submit');
@@ -6,16 +7,33 @@ $(document).ready( () => {
     const $album =          $('#album');
     const $song =           $('#song');
 
-    $(document).on('click', '#submit', (event) => {
-        event.preventDefault();
+    init();
 
-        submit_search($artist, $album, $song);
-        
+    //========== LISTENERS...
+
+    $('#log_in').on('click', (event) => {
+        event.preventDefault();
+        console.log('Signing in...');
+        log_in();
     });
 
+    $('#sign_up').on('click', (event) => {
+        event.preventDefault();
+        console.log('Processing...');
+        register();
+    });
+
+    $('#submit').on('click', (event) => {
+        event.preventDefault();
+        submit_search($artist, $album, $song); 
+    });
+
+    validate_length( $('#su_user_name'), $('#su_un_d'), 3, 15 );
+    validate_length( $('#su_password'), $('#su_up_d'), 6, 15 );
 });
 
-// EVENT DELEGATION...
+//============================== EVENT DELEGATION...
+
 // Event delegation for '.selected_row' class...
 $(document).on('click', '.selected_row', (event) => {
     event.preventDefault();
@@ -28,28 +46,110 @@ $(document).on('click', '.selected_row', (event) => {
     };
     console.log(selected_data);
 
-    $.post('/api/posts/', selected_data).then((result) => {
-        load_comments(result);
+    $.post('/api/posts/', selected_data)
+        .then((result) => {
+            $('#display').empty();
+            load_comment_button(result);
+            load_comments(result);
     });
-    
 });
 
-// // Event delegation for '#comment_submit' modal button...
-// $(document).on('click', '#comment_submit', (event) => {
-//     console.log('Submitting comment...');
 
-//     let c_post = {
-//         UserId: 1, 
-//         // album: , 
-//         // artist: , 
-//         // song: , 
-//         body: $('#c_body'), 
-//         rating: $('#c_rating')
-//     };
-// });
+//============================== FUNCTIONS...
 
+function init () {
+    // enable materialize modal button...
+    $('.modal').modal();
+    // enable materialize rating select...
+    $('select').formSelect();
+    // enable materialize text input functionality...
+    $('input#input_text, textarea#textarea2').characterCounter();
+}
 
-// FUNCTIONS...
+function log_in () {
+    let data = {
+        user_name: $('#li_email').val().trim(),
+        user_password: $('#li_password').val().trim()
+    };
+    console.log(data);
+
+    // Use a post route to send {data} to db and return UserId and email if it exists in db...
+    $.post('/api/users/auth', data).then( result => {
+            if (typeof result === 'object') {
+                console.log(`Log in successful! Welcome back ${result.user_name}`);
+                console.log(result);
+            }
+            else {
+                alert(result);
+            }
+        });
+}
+
+function register () {
+    let data = {
+        user_name: $('#su_user_name').val().trim(),
+        user_email: $('#su_user_email').val().trim(),
+        user_password: $('#su_password').val().trim(),
+        user_avatar: $('#su_user_avatar').val().trim()
+    };
+    console.log(data);
+
+    let nameValid = validate_length( $('#su_user_name'), $('#su_un_d'), 3, 15, 'Username' );
+    let passValid = validate_length( $('#su_password'), $('#su_up_d'), 6, 15, 'Password' );
+
+    if (!nameValid) {
+        console.log('username is NOT valid');
+    } else if (!passValid) {
+        console.log('password is NOT valid');
+    }
+    else {
+        console.log('Everything is valid');
+        // Use a post route to send {data} to db, create a new user using that data, and return the UserId and email from the db...
+        $.post('/api/users', data).then( result => {
+            if (typeof result === 'object') {
+                console.log(`Registration successful!`);
+            }
+            else if (typeof result === 'string') {
+                alert(result);
+            }
+            else {
+                console.log(result);
+            }
+        });
+    }
+}
+
+function validate_length (a, b, x, y, z) {
+    let length = a.val().trim().length;
+    a.keyup( () => {
+        if (a.val().trim().length < x) {
+            a.addClass('invalid');
+            b.attr('data-error', 'Too short!');
+        }
+        else if (a.val().trim().length > y) {
+            a.addClass('invalid');
+            b.attr('data-error', 'Too long!');
+        }
+        else {
+            a.removeClass('invalid');
+        }
+    });
+
+    let valid = false;
+    if ( !(length < x || length > y) ) {
+        a.removeClass('invalid');
+        valid = true;
+    }
+
+    if (z) {
+        if (!valid) {
+            alert(`${z} is invalid`);
+        }
+    }
+
+    return valid;
+}
+
 function get_search_type (a, b, c) {
     if (a.is(':checked')) {
             return a[0].id;
@@ -84,16 +184,19 @@ function submit_search(x, y, z) {
             case 'artist':
                 $.get(`/api/spotify/artists/${user_input.input}`)
                     .then( (result) => {
+                        $('#display').empty();
                         load_artist_songs(result);
-                    });
+                });
                 break;
             case 'album':
                 $.get(`/api/spotify/artists/${user_input.input}`).then(result => {
+                    $('#display').empty();
                     load_artist_songs(result);
                 });
                 break;
             case 'song':
                 $.get(`/api/spotify/artists/${user_input.input}`).then(result => {
+                    $('#display').empty();
                     load_artist_songs(result);
                 });
                 break;
@@ -103,7 +206,6 @@ function submit_search(x, y, z) {
 }
 
 function load_artist_songs (x) {
-    $('#display').empty();
     let table = `
     <table class="highlight">
         <thead>
@@ -137,14 +239,7 @@ function load_artist_songs (x) {
     });
 }
 
-function load_comments (x) {
-    console.log('data was sent...');
-    $('#display').empty();
-
-    let comments = `
-        <div class="row" id="comments"></div>
-    `;
-    
+function load_comment_button (x) {
     let comment = `
         <!-- Modal Trigger -->
         <a class="waves-effect waves-light btn modal-trigger" href="#comment_modal">Comment</a>
@@ -184,13 +279,47 @@ function load_comments (x) {
     `;
 
     $('#display').append(comment);
+
+    // Event delegation for '#comment_submit' modal button...
+    $(document).on('click', '#comment_submit', (event) => {
+        event.preventDefault();
+        console.log('Submitting comment...');
+
+        let c_post = {
+            UserId: x.data.length + 1, 
+            album: x.meta.album, 
+            artist: x.meta.artists, 
+            song: x.meta.song, 
+            body: $('#c_body').val(), 
+            rating: $('#c_rating').val()
+        };
+
+        if (c_post.body === '' 
+            || c_post.body === undefined 
+            || c_post.body === null) {
+            alert(`You can't submit a blank comment.`);
+        }
+        else {
+            // console.log(c_post);
+            $.post('/api/posts/create', c_post)
+                .then( (result) => {
+                    console.log('Post successful! Posted the following data: ', result);
+
+                    // function that reloads page with results...
+                        // probably best to do this on the server side with a res.render() using handlebars...
+            });
+        }
+    });
+}
+
+function load_comments (x) {
+    console.log('data was sent...');
+    let comments = `
+        <div class="row" id="comments"></div>
+    `;
+
+    // $('#display').append(comment);
     $('#display').append(comments);
-
-
-    // enable materialize modal button...
-    $('.modal').modal();
-    // enable materialize rating select...
-    $('select').formSelect();
 
     if (x.data) {
         console.log('data was recieved back!');
@@ -217,37 +346,6 @@ function load_comments (x) {
             </div>
             `;
             $('#comments').append(post);
-            
         });
     }
-
-    // Event delegation for '#comment_submit' modal button...
-    $(document).on('click', '#comment_submit', (event) => {
-        event.preventDefault();
-        console.log('Submitting comment...');
-
-        let c_post = {
-            UserId: x.data.length + 1, 
-            album: x.meta.album, 
-            artist: x.meta.artists, 
-            song: x.meta.song, 
-            body: $('#c_body').val(), 
-            rating: $('#c_rating').val()
-        };
-
-        if (c_post.body === '' 
-        || c_post.body === undefined 
-        || c_post.body === null) {
-            alert(`You can't submit a blank comment.`);
-        }
-        else {
-            // console.log(c_post);
-            $.post('/api/posts/create', c_post).then( (result) => {
-                console.log('Post successful! Posted the following data: ', result);
-
-                // function that reloads page with results...
-                
-            });
-        }
-    });
 }
