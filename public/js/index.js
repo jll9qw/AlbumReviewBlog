@@ -279,6 +279,7 @@ function load_comment_button (x) {
     `;
 
     $('#display').append(comment);
+    init();
 
     // Event delegation for '#comment_submit' modal button...
     $(document).on('click', '#comment_submit', (event) => {
