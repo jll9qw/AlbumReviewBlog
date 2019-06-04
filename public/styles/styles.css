@@ -12,8 +12,23 @@ nav .brand-logo {
   color: #444;
 }
 
+#log_in {
+  color: rgb(121, 28, 28) !important; 
+}
+
 .header {
   font-family: 'Raleway', sans-serif !important;
+  font-size: 65px !important;
+  transition: 0.2s !important;
+  -webkit-transition: 0.2s !important;
+}
+
+.header:hover {
+  font-size: 69px !important;
+  color: rgb(155, 155, 155) !important;
+}
+
+.header:active {
   font-size: 65px !important;
 }
 
@@ -67,3 +82,34 @@ footer.page-footer {
   margin: 0;
 }
 
+#github-link {
+  font-size: 17px !important;
+  margin: 0% auto !important;
+  transition: 0.2s !important;
+  -webkit-transition: 0.2s !important;
+}
+
+#github-link:hover {
+  font-size: 20px !important;
+  color: rgb(145, 145, 145) !important;
+}
+
+#github-link:active {
+  font-size: 17px !important;
+}
+
+#albumize-link {
+  font-size: 20px !important;
+  margin: 0% auto !important;
+  transition: 0.2s !important;
+  -webkit-transition: 0.2s !important;
+}
+
+#albumize-link:hover {
+  font-size: 23px !important;
+  color: rgb(145, 145, 145) !important;
+}
+
+#albumize-link:active {
+  font-size: 20px !important;
+}
