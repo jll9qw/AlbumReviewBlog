@@ -2,13 +2,14 @@ var Users = require('./users');
 
 module.exports = (sequelize, DataTypes) => {
         let Posts = sequelize.define('Posts', {
-            user_id: {
-                type: DataTypes.INTEGER,
-                references: {
-                    model: 'Users',
-                    key: 'id'
-                }
-            },
+            // user_id: {
+            //     type: DataTypes.INTEGER
+            //     ,
+            //     references: {
+            //         model: 'Users',
+            //         key: 'UserId'
+            //     }
+            // },
             body: {
                 type: DataTypes.TEXT,
                 allowNull: false,

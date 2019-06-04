@@ -8,6 +8,7 @@ $(document).ready( () => {
     const $song =           $('#song');
 
     init();
+    $('#display').remove('#cm_btn');
 
     //========== LISTENERS...
 
@@ -30,6 +31,7 @@ $(document).ready( () => {
 
     validate_length( $('#su_user_name'), $('#su_un_d'), 3, 15 );
     validate_length( $('#su_password'), $('#su_up_d'), 6, 15 );
+    load_user_status();
 });
 
 //============================== EVENT DELEGATION...
@@ -48,14 +50,55 @@ $(document).on('click', '.selected_row', (event) => {
 
     $.post('/api/posts/', selected_data)
         .then((result) => {
+            console.log(result);
             $('#display').empty();
-            load_comment_button(result);
+            // load_comment_button(result);
+            load_cb_if_logged_in(result);
+            
             load_comments(result);
     });
 });
 
 
 //============================== FUNCTIONS...
+
+function load_cb_if_logged_in (resp) {
+    if (sessionStorage.getItem('user_data')) {
+        let x = JSON.parse(sessionStorage.getItem('user_data'));
+        load_comment_button(sessionStorage.getItem('user_data'), resp);
+    }
+}
+
+function load_user_status (a) {
+    if (sessionStorage.getItem('user_data')) {
+        if (a === undefined) {
+            a = JSON.parse(sessionStorage.getItem('user_data'));
+        }
+        let status = `
+        <div class="col s12 center">
+            <a 
+                class="waves-effect waves-light btn-flat white-text btn modal-trigger right" 
+                href="#"
+            >Welcome back, ${a.user_name}
+            </a>
+        </div>
+        `;
+        $('#user_status').empty();
+        $('#user_status').prepend(status);
+    }
+}
+
+function save_user_data (data) {
+    // sessionStorage.clear();
+    let dataToKeep = {
+        id: data.id,
+        user_name: data.user_name,
+        user_email: data.user_email,
+        user_avatar: data.user_avatar,
+        Posts: data.Posts
+    };
+    sessionStorage.setItem('user_data', JSON.stringify(dataToKeep));
+}
 
 function init () {
     // enable materialize modal button...
@@ -71,13 +114,14 @@ function log_in () {
         user_email: $('#li_email').val().trim(),
         user_password: $('#li_password').val().trim()
     };
-    console.log(data);
 
     // Use a post route to send {data} to db and return UserId and email if it exists in db...
     $.post('/api/users/auth', data).then( result => {
             if (typeof result === 'object') {
                 console.log(`Log in successful! Welcome back ${result.user_name}`);
-                console.log(result);
+                // console.log(result);
+                save_user_data(result);
+                load_user_status();
             }
             else {
                 alert(result);
@@ -92,7 +136,6 @@ function register () {
         user_password: $('#su_password').val().trim(),
         user_avatar: $('#su_user_avatar').val().trim()
     };
-    console.log(data);
 
     let nameValid = validate_length( $('#su_user_name'), $('#su_un_d'), 3, 15, 'Username' );
     let passValid = validate_length( $('#su_password'), $('#su_up_d'), 6, 15, 'Password' );
@@ -108,6 +151,8 @@ function register () {
         $.post('/api/users', data).then( result => {
             if (typeof result === 'object') {
                 console.log(`Registration successful!`);
+                save_user_data(result);
+                load_user_status();
             }
             else if (typeof result === 'string') {
                 alert(result);
@@ -239,10 +284,11 @@ function load_artist_songs (x) {
     });
 }
 
-function load_comment_button (x) {
+function load_comment_button (x, y) {
+    console.log('load comment btn recieved: ', y.data.length);
     let comment = `
         <!-- Modal Trigger -->
-        <a class="waves-effect waves-light btn modal-trigger" href="#comment_modal">Comment</a>
+        <a class="waves-effect waves-light btn modal-trigger" href="#comment_modal" id="cm_btn">Comment</a>
 
         <!-- Modal Structure -->
         <div id="comment_modal" class="modal">
@@ -278,19 +324,21 @@ function load_comment_button (x) {
         </div>
     `;
 
-    $('#display').append(comment);
+    $('#display').prepend(comment);
     init();
 
     // Event delegation for '#comment_submit' modal button...
     $(document).on('click', '#comment_submit', (event) => {
         event.preventDefault();
+        console.log(x);
         console.log('Submitting comment...');
-
+        console.log(y.data.length++);
         let c_post = {
-            UserId: x.data.length + 1, 
-            album: x.meta.album, 
-            artist: x.meta.artists, 
-            song: x.meta.song, 
+            UserId: y.data.length + 1,
+            user_id: x.id, 
+            album: y.meta.album, 
+            artist: y.meta.artists, 
+            song: y.meta.song, 
             body: $('#c_body').val(), 
             rating: $('#c_rating').val()
         };
@@ -327,13 +375,17 @@ function load_comments (x) {
         console.log(x.data);
 
         x.data.forEach((post_data) => {
-
+            $.get('/api/users').then( result => {
+                let author = result.filter( (user) => {
+                    user.id === post_data.user_id ? true : false;
+                });
+            });
             let post = `
             <div class="col s12 m8 offset-m2 l6 offset-l3">
                 <div class="card-panel grey lighten-5 z-depth-1">
                     <div class="row valign-wrapper">
                         <div class="col s2">
-                            <img src="https://avatars2.githubusercontent.com/u/27834803?s=460&v=4" alt="" class="circle responsive-img"> <!-- notice the "circle" class -->
+                            <img src="${post_data.user_avatar}" alt="" class="circle responsive-img"> <!-- notice the "circle" class -->
                         </div>
                         <div class="col s10">
                             <h5>${post_data.user_id}</h5>

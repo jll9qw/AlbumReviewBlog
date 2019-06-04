@@ -2,6 +2,7 @@
 
 var db = require("../models");
 var SpotifyAPI = require('./spotify');
+var moment = require('moment');
 
 module.exports = function(app) {
 
@@ -18,8 +19,8 @@ module.exports = function(app) {
     console.log(req.body);
     db.Users.findOne({
       where: req.body
-      // ,
-      // include: [db.Posts]
+      ,
+      include: [db.Posts]
     }).then((dbUser) => {
       console.log(dbUser);
       if (dbUser === null) {
@@ -98,19 +99,25 @@ module.exports = function(app) {
         album_name: req.body.album
       }
     }).then((dbPosts) => {
+      // console.log(dbPosts[0]['_modelOptions'][0]);
       let obj = {
         meta: meta,
         data: dbPosts
       };
+
       res.json(obj);
-    });
+    })
+      .then((result) => {
+        console.log('This is the result', result);
+      });
   });
 
   // POST a new post...
   app.post('/api/posts/create', (req, res) => {
     console.log(req.body);
     db.Posts.create({
-      UserId: req.body.UserId, 
+      UserId: req.body.UserId,
+      user_id: req.body.user_id, 
       album_name: req.body.album, 
       artist_name: req.body.artist, 
       song_name: req.body.song, 
@@ -149,7 +156,7 @@ module.exports = function(app) {
           artists: track.artists[0].name,
           song_title: track.name,
           preview: track.preview_url,
-          time: track.duration_ms
+          time: moment(track.duration_ms).format('mm:ss')
         }
       });
 
