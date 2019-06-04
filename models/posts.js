@@ -2,6 +2,12 @@ var Users = require('./users');
 
 module.exports = (sequelize, DataTypes) => {
         let Posts = sequelize.define('Posts', {
+            id: {
+                type: DataTypes.INTEGER,
+                primaryKey: true,
+                // allowNull: false,
+                autoIncrement: true,
+            },
             user_id: {
                 type: DataTypes.INTEGER,
                 references: {
@@ -33,14 +39,20 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.INTEGER,
                 allowNull: false,
                 len: [1, 5]
+            },
+            user_avatar: {
+                type: DataTypes.STRING,
+                validate: {
+                    isUrl: true
+                }
             }
         });
 
         Posts.associate = (models) => {
             Posts.belongsTo(models.Users, {
-                foreignKey: {
-                    allowNull: false
-                }
+                // foreignKey: {
+                //     allowNull: false
+                // }
             });
         };
 

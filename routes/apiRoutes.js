@@ -2,6 +2,7 @@
 
 var db = require("../models");
 var SpotifyAPI = require('./spotify');
+var moment = require('moment');
 
 module.exports = function(app) {
 
@@ -13,26 +14,59 @@ module.exports = function(app) {
     });
   });
 
-  // Get a User...
+  // Get a User for Log in...
   app.post('/api/users/auth', (req, res) => {
-    // console.log(req.body);
+    console.log(req.body);
     db.Users.findOne({
-      where: {
-        user_name: req.body.user_name,
-        user_password: req.body.user_password
-      },
+      where: req.body
+      ,
       include: [db.Posts]
     }).then((dbUser) => {
       console.log(dbUser);
-      res.json(dbUser);
+      if (dbUser === null) {
+        res.json(`Log in credentials invalid.`);
+      }
+      else {
+        res.json(dbUser)
+      }
+    }).catch( err => {
+      console.log(err);
+      // console.log(err.errors[0].message);
+      // let message = err.errors[0].message;
+      // res.json(message);
     });
   });
 
   // POST a new user...
   app.post('/api/users', (req, res) => {
-    db.Users.create(req.body).then((dbUser) => {
-      res.json(dbUser);
-    });
+    db.Users
+        // first check to see if the user already exists...
+        .findOrCreate({
+          where: {
+            user_name: req.body.user_name,
+          },
+          defaults: {
+            user_email: req.body.user_email,
+            user_password: req.body.user_password,
+            user_avatar: req.body.user_avatar
+          }
+        })
+        .then( ([user, created]) => {
+          // console.log(user.get({plain:true}));
+          if (created) {
+            res.json(user);
+          }
+          else {
+            res.send('The information you submitted is associated with an existing account!');
+          }
+        })
+        .catch( err => {
+          // let message = err.errors[0].message;
+          let message = `${err.errors[0].type}: ${err.errors[0].message}.\n "${err.errors[0].value}" failed the ${err.errors[0].validatorKey} validation.`;
+          console.log('Message sent: ', message);
+
+          res.json(message);
+        });
   });
 
   // DELETE a user...
@@ -57,20 +91,49 @@ module.exports = function(app) {
 
   // GET specific posts...
   app.post('/api/posts/', (req, res) => {
+    let meta = req.body;
     db.Posts.findAll({
       where: {
-        artist_name: req.body.artist_name,
-        song_name: req.body.song_name
+        artist_name: req.body.artists,
+        song_name: req.body.song,
+        album_name: req.body.album
       }
     }).then((dbPosts) => {
-      res.json(dbPosts);
-    });
+      // console.log(dbPosts[0]['_modelOptions'][0]);
+
+      // loop through dbPosts. If any post's user_avatar === null, set it to a generic user image...
+      dbPosts.forEach( (post) => {
+        // console.log(post);
+        if (post.user_avatar === null) {
+          post.user_avatar = 'http://www.personalbrandingblog.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png';
+        }
+      });
+      let obj = {
+        meta: meta,
+        data: dbPosts
+      };
+
+      res.json(obj);
+    })
+      .then((result) => {
+        console.log('This is the result', result);
+      });
   });
 
   // POST a new post...
-  app.post('/api/posts', (req, res) => {
-    app.Posts.create(req.body).then((dbPost) => {
-      res.json(dbPost);
+  app.post('/api/posts/create', (req, res) => {
+    console.log(req.body);
+    db.Posts.create({
+      user_id: req.body.user_id,
+      user_avatar: req.body.avatar, 
+      album_name: req.body.album, 
+      artist_name: req.body.artist, 
+      song_name: req.body.song, 
+      body: req.body.body, 
+      rating: req.body.rating
+    }).then((dbPost) => {
+      // res.json(dbPost);
+      res.send(dbPost);
     });
   });
 
@@ -101,7 +164,7 @@ module.exports = function(app) {
           artists: track.artists[0].name,
           song_title: track.name,
           preview: track.preview_url,
-          time: track.duration_ms
+          time: moment(track.duration_ms).format('mm:ss')
         }
       });
 
