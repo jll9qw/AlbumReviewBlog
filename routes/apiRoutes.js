@@ -100,6 +100,14 @@ module.exports = function(app) {
       }
     }).then((dbPosts) => {
       // console.log(dbPosts[0]['_modelOptions'][0]);
+
+      // loop through dbPosts. If any post's user_avatar === null, set it to a generic user image...
+      dbPosts.forEach( (post) => {
+        // console.log(post);
+        if (post.user_avatar === null) {
+          post.user_avatar = 'http://www.personalbrandingblog.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png';
+        }
+      });
       let obj = {
         meta: meta,
         data: dbPosts
@@ -116,8 +124,8 @@ module.exports = function(app) {
   app.post('/api/posts/create', (req, res) => {
     console.log(req.body);
     db.Posts.create({
-      UserId: req.body.UserId,
-      user_id: req.body.user_id, 
+      user_id: req.body.user_id,
+      user_avatar: req.body.avatar, 
       album_name: req.body.album, 
       artist_name: req.body.artist, 
       song_name: req.body.song, 

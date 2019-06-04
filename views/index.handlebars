@@ -173,6 +173,43 @@
 
 
   <div class="container">
+    <div class="section">
+      <!-- Modal Trigger -->
+            <a class="waves-effect waves-light btn modal-trigger" href="#comment_modal" id="cm_btn">Comment</a>
+
+            <!-- Modal Structure -->
+            <div id="comment_modal" class="modal">
+                <div class="modal-content">
+                    <!--
+                    <h5 class="col s4 left">Rating:</h5>
+                    -->
+                    <div class="input-field col s8 right" >
+                        <select id="c_rating">
+                            <!--
+                            <option value="" disabled selected>Choose your option</option>
+                            -->
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                        <label>Rating</label>
+                    </div>
+                    <div class="input-field col s12">
+                        <textarea 
+                        class="materialize-textarea"
+                        id="c_body"
+                        ></textarea>
+                        <label for="c_body">Leave a comment...</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="#!" class="waves-effect waves-green btn-flat" id="comment_submit">Submit</a>
+                    <a href="#!" class="modal-close waves-effect waves-red btn-flat">Cancel</a>
+                </div>
+            </div>
+    </div>
     <div class="section" id="display">
 
         {{!-- <section id="display"></section> --}}

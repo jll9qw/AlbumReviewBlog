@@ -7,7 +7,8 @@
             let temp_data = {
                 searchResults,
                 allCurrentUsers,
-                lastSearchReq
+                lastSearchReq,
+                selectedTrack
             };
         *After each route's results are recieved from the server, store them to session the temp_data object.
 
