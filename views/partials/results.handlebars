@@ -1,0 +1,26 @@
+<table>
+  <thead>
+    <tr>
+        <th>Preview</th>
+        <th>Artist(s)</th>
+        <th>Title</th>
+        <th>Album</th>
+        <th>Time</th>
+    </tr>
+  </thead>
+
+  <tbody>
+
+    
+    {{#each this}}
+    <tr>
+      <td><a href="{{this.preview}}"><i class="small material-icons">audiotrack</i></a></td>
+      <td>{{this.artists}}</td>
+      <td>{{this.song_title}}</td>
+      <td>{{this.album_title}}</td>
+      <td>{{this.time}}</td>
+    </tr>
+    {{/each}}
+
+  </tbody>
+</table>

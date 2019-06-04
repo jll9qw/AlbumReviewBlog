@@ -1,33 +1,278 @@
-<div id="home">
-  <div class="container">
-    <div class="row">
-      <div class="col-8 offset-2">
-        <h1>{{msg}}</h1>
-        <h2>This is our Home Page!</h2>
-        <form class="clearfix mb-4" action="POST">
-          <div class="form-group">
-            <label for="example-text">Example Text</label>
-            <input type="text" id="example-text" class="form-control" aria-describedby="example-text" placeholder="Enter Example Text">
+
+ <!-- Parallax banner -->
+  <div id="index-banner" class="parallax-container">
+    <div class="section no-pad-bot">
+      <div class="container">
+ 
+        <!-- Log in & Sign up -->
+        <div class="row" id="user_status">
+          <div class="col s12 center">
+            <!-- Log in Modal Trigger -->
+            <a  
+              class="waves-effect waves-light btn-flat white-text btn modal-trigger" 
+              href="#m_log_in"
+            >LOG IN</a>
+
+            <!-- Log in Modal Structure -->
+            <div id="m_log_in" class="modal black-text valign-wrapper">
+              <div class="modal-content">
+                <div class="row">
+                  <form class="col s12">
+                    <div class="row">
+                      <div class="input-field col s12">
+                        <input 
+                        placeholder="What is your email address?" 
+                        id="li_email" 
+                        type="email" 
+                        class="validate"
+                        >
+                        <label for="li_email">Email</label>
+                        <span class="helper-text left" data-error="Invalid email format" data-success="Awesome!">Must be a valid email address</span>
+                      </div>
+                      <div class="input-field col s12">
+                        <input 
+                        id="li_password" 
+                        type="password" 
+                        class="validate" 
+                        data-length="15"
+                        >
+                          <label for="li_password">Password</label>
+                          <span class="helper-text left" data-error="Weak" data-success="Strong!">Must be 6-15 characters long</span>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <a id="log_in" href="#!" class="modal-close waves-effect waves-green btn-flat">Log In</a>
+                <a href="#!" class="modal-close waves-effect waves-red btn-flat">Cancel</a>
+              </div>
+            </div>
+
+            <!-- Sign Up Modal Trigger -->
+            <a
+              id="m_sign_up_btn"  
+              class="waves-effect waves-light btn-flat white-text btn modal-trigger" 
+              href="#m_sign_up"
+            >SIGN UP</a> Not a user? Sign up!
+
+            <!-- Sign Up Modal Structure -->
+            <div id="m_sign_up" class="modal black-text">
+              <div class="modal-content">
+                <div class="row">
+                  <form class="col s12">
+                    <div class="row">
+                      <div class="input-field col s12">
+                        <input 
+                        placeholder="Enter a unique username" 
+                        id="su_user_name" 
+                        type="text" 
+                        class="validate"
+                        >
+                        <label for="su_user_name">User Name</label>
+                        <span 
+                        class="helper-text left" data-error="Must enter a valid username" 
+                        data-success="Good"
+                        id="su_un_d"
+                        >Must be 3-15 characters long</span>
+                      </div>
+                      <div class="input-field col s6">
+                        <input 
+                        placeholder="What is your email address?" 
+                        id="su_user_email" 
+                        type="email" 
+                        class="validate"
+                        >
+                        <label for="su_user_email">Email</label>
+                        <span class="helper-text left" data-error="Invalid email format" data-success="Awesome!">Must be a valid email address</span>
+                      </div>
+                      <div class="input-field col s6">
+                        <input 
+                        id="su_password" 
+                        type="password" 
+                        class="validate"
+                        data-length="15"
+                        >
+                        <label for="su_password">Password</label>
+                        <span 
+                        class="helper-text left" data-error="Weak" 
+                        data-success="Strong!"
+                        id="su_up_d"
+                        >Must be 6-15 characters long</span>
+                      </div>
+                      <div class="input-field col s12">
+                        <input 
+                        placeholder="Enter a valid link to a photo of you :)" 
+                        id="su_user_avatar" 
+                        type="url" 
+                        class="validate"
+                        >
+                        <label for="su_user_avatar">Avatar URL</label>
+                        <span class="helper-text left" data-error="Invalid url" data-success="Good">Must be a valid link</span>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <a id="sign_up" href="" class="modal-close waves-effect waves-green btn-flat">Register</a>
+                <a href="#!" class="modal-close waves-effect waves-red btn-flat">Cancel</a>
+              </div>
+            </div>
+
+         </div>
+       </div>
+
+        <h1 class="header center text-lighten-5"><i class="far fa-play-circle"></i> Albumize</h1>
+
+        <!-- Search box -->
+        <div class="row">
+           <div class="input-field label col s10 m10">
+            <i class="large material-icons prefix">search</i>
+            <input id="user_search" id="icon_prefix" type="search" class="search">
+            <label for="icon_prefix">Search</label>
           </div>
-          <div class="form-group">
-            <label for="example-description">Example Description</label>
-            <textarea class="form-control" id="example-description" aria-describedby="example-description" placeholder="Enter Example Description"></textarea>
-          </div>
-          <button id="submit" class="btn btn-primary float-right">Submit</button>
-        </form>
-        <h3>Examples:</h3>
-        <ul id="example-list" class="list-group">
-          {{#each examples}}
-          <li data-id="{{this.id}}" class="list-group-item">
-            <a href="example/{{this.id}}">{{this.text}}</a>
-            <button class="btn btn-danger float-right delete">ｘ</button>
-          </li>
-          {{/each}}
-        </ul>
+
+          <div class="input-field label col s2 m2">
+              <a id="submit" class="grey darken-1 waves-effect waves-light btn-large">Submit</a>
+            </div>
+        </div>
+       
+        <!-- Album, Artist, Song -->
+        <div class="row center">
+            <div class="col s4 m4">
+              <p>
+                <label>
+                  <input id="album" name="group1" type="radio" />
+                  <span class="white-text text-darken-2">Album</span>
+                </label>
+              </p>
+            </div>
+            <div class="col s4 m4">
+                <p>
+                  <label>
+                    <input id="artist" name="group1" type="radio" />
+                    <span class="white-text text-darken-2">Artist</span>
+                  </label>
+                </p>
+              </div>
+            <div class="col s4 m4">
+                <p>
+                  <label>
+                    <input id="song" name="group1" type="radio" />
+                    <span class="white-text text-darken-2">Song</span>
+                  </label>
+                </p>
+            </div>
+        </div>
+
       </div>
     </div>
+    <div class="parallax"><img src="/images/background1.jpg" alt="Unsplashed background img 1"></div>
   </div>
-</div>
 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="/js/index.js"></script>
+
+  <div class="container">
+    <div class="section">
+      <!-- Modal Trigger -->
+            <a class="waves-effect waves-light btn modal-trigger" href="#comment_modal" id="cm_btn">Comment</a>
+
+            <!-- Modal Structure -->
+            <div id="comment_modal" class="modal">
+                <div class="modal-content">
+                    <!--
+                    <h5 class="col s4 left">Rating:</h5>
+                    -->
+                    <div class="input-field col s8 right" >
+                        <select id="c_rating">
+                            <!--
+                            <option value="" disabled selected>Choose your option</option>
+                            -->
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                        <label>Rating</label>
+                    </div>
+                    <div class="input-field col s12">
+                        <textarea 
+                        class="materialize-textarea"
+                        id="c_body"
+                        ></textarea>
+                        <label for="c_body">Leave a comment...</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="#!" class="waves-effect waves-green btn-flat" id="comment_submit">Submit</a>
+                    <a href="#!" class="modal-close waves-effect waves-red btn-flat">Cancel</a>
+                </div>
+            </div>
+    </div>
+    <div class="section" id="display">
+
+        {{!-- <section id="display"></section> --}}
+
+      <br><br><br>
+      <!-- Icon Section -->
+      <div class="row">
+        <div class="col s12 m4">
+          <div class="icon-block">
+            <h2 class="center"><i class="material-icons">play_circle_outline</i></h2>
+            <h5 class="center">Play anywhere</h5>
+
+            <p class="light">Play music from anywhere in the world, just select either Album Artist, or Song and search!</p>
+          </div>
+        </div>
+
+        <div class="col s12 m4">
+          <div class="icon-block">
+            <h2 class="center"><i class="material-icons">group</i></h2>
+            <h5 class="center">Interact with other users</h5>
+
+            <p class="light">See other users, their reviews and reply to them.</p>
+          </div>
+        </div>
+
+        <div class="col s12 m4">
+          <div class="icon-block">
+            <h2 class="center"><i class="material-icons">question_answer</i></h2>
+            <h5 class="center">Review albums</h5>
+
+            <p class="light">Feeling like leaving your own review? Give it a go.</p>
+          </div>
+        </div>
+      </div>
+
+      <br><br><br>
+      
+    </div>
+  </div>
+
+  <div class="parallax-container valign-wrapper">
+    <div class="section no-pad-bot">
+      <div class="container">
+        <div class="row center">
+        </div>
+      </div>
+    </div>
+    <div class="parallax"><img src="/images/background3.jpg" alt="Unsplashed background img 3"></div>
+  </div>
+
+  <footer class="page-footer black">
+    <div class="container">
+      <div class="row center">
+        <div class="col m12 s12">
+          {{!-- <h5 class="white-text">Bio</h5>
+          <p class="grey-text text-lighten-4">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Consectetur, fugit nam optio possimus at doloribus commodi ratione nulla reiciendis sapiente veniam et? Deleniti numquam ratione tempore voluptatem, nesciunt eos doloribus..</p> --}}
+        </div>
+      
+        
+      </div>
+    </div>
+    <div class="footer-copyright">
+    </div>
+  </footer>
+
+
