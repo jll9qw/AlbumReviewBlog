@@ -13,12 +13,12 @@
 
 
 * MySQL Database 
-        - Main Table:
-            * Users
-        * Relational Tables:
-            - Top Rated,
-            - Most Commented,
-            - Latest Review
+    - Main Table:
+        * Users
+    - Relational Tables:
+            * Top Rated,
+            * Most Commented,
+            * Latest Review
 * GET and POST routes for retrieving and adding new data;
     * GET routes
     * POST routes
