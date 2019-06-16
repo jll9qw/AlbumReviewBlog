@@ -25,7 +25,10 @@
 
 
 
-###Links
+## Links
+
 **[LinkedIn](https://www.linkedin.com/in/jason-lloyd-a0ba9529/)**
+
 **[Albumize App](https://glacial-tundra-34381.herokuapp.com/)**
+
 **[Github repo](https://github.com/jll9qw/AlbumReviewBlog.git)**
