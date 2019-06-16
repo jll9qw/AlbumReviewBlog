@@ -1,6 +1,6 @@
 
 # Albumize
-##An Album Review application
+## An Album Review application
 
 
 * This application utilizes the following:
