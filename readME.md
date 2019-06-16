@@ -1,8 +1,15 @@
 
-### Requirements
+# Albumize
+##An Album Review application
 
 
-* Use a Node and Express Web Server;
+* This application utilizes the following:
+
+1. NODE/EXPRESS SERVER
+2. MYSQL DB
+3. HEROKU
+4. HANDLEBARS
+
 
 
 * MySQL Database 
@@ -16,14 +23,11 @@
 * Have both GET and POST routes for retrieving and adding new data;
     * GET routes
     * POST routes
-* Be deployed using Heroku (with Data);
 
 
 
 
-1. NODE/EXPRESS SERVER
-2. MYSQL DB
-3. HEROKU
+
 
 
 **[LinkedIn](https://www.linkedin.com/in/jason-lloyd-a0ba9529/)**
