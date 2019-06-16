@@ -13,14 +13,13 @@
 
 
 * MySQL Database 
-    - our database will have one main table and a few relational databases:
-        * Main Table:
-            - Users
+        - Main Table:
+            * Users
         * Relational Tables:
             - Top Rated,
             - Most Commented,
             - Latest Review
-* Have both GET and POST routes for retrieving and adding new data;
+* GET and POST routes for retrieving and adding new data;
     * GET routes
     * POST routes
 
