@@ -23,7 +23,7 @@
     * GET routes
     * POST routes
 
-[Screenshot](/Screen Shot 2019-06-16 at 2.46.39 PM.png)
+[Screenshot] (/Screen Shot 2019-06-16 at 2.46.39 PM.png)
 Format: ![Alt Text](url)
 
 
