@@ -23,15 +23,9 @@
     * GET routes
     * POST routes
 
-[Screenshot](/public/images/Screen Shot 2019-06-16 at 2.46.39 PM.png)
-Format: ![Alt Text](url)
 
 
-
-
-
+###Links
 **[LinkedIn](https://www.linkedin.com/in/jason-lloyd-a0ba9529/)**
-
 **[Albumize App](https://glacial-tundra-34381.herokuapp.com/)**
-
 **[Github repo](https://github.com/jll9qw/AlbumReviewBlog.git)**
